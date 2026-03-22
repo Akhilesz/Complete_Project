@@ -1,0 +1,7 @@
+
+CREATE TABLE urls (
+    id  SERIAL UNIQUE,
+    longurl TEXT NOT NULL,
+    shortcode VARCHAR(10) UNIQUE NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
