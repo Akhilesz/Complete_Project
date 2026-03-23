@@ -3,6 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 	"url/repository"
 )
 
@@ -12,9 +13,11 @@ type Handler struct {
 
 func (handler *Handler) ShortenUrl(w http.ResponseWriter, r *http.Request) {
 	var req ShortenRequest
-
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+	if !strings.Contains(req.LongURL, "https://") {
+		req.LongURL = "https://" + req.LongURL
 	}
 	shortCode := GenerateShortCode(req.LongURL)
 	code, err := handler.Repo.Save(req.LongURL, shortCode)
